@@ -87,8 +87,8 @@ int main(void)
 	cudaMalloc((void**)&dev_c, SIZE * sizeof(int));
 
 	// copy from host to device
-	cudaMemcpy(dev_a, a, SIZE, cudaMemcpyHostToDevice); // dev_a = a;
-	cudaMemcpy(dev_b, b, SIZE, cudaMemcpyHostToDevice); // dev_b = b;
+	cudaMemcpy(dev_a, a, SIZE * sizeof(int), cudaMemcpyHostToDevice); // dev_a = a;
+	cudaMemcpy(dev_b, b, SIZE * sizeof(int), cudaMemcpyHostToDevice); // dev_b = b;
 
 	// launch a kernel on the GPU with one thread for each element
 	addKernel <<<1, SIZE >>>(dev_c, dev_a, dev_b); // dev_c = dev_a + dev_b;
@@ -104,12 +104,7 @@ int main(void)
 	cudaFree(dev_b);
 
 	// print the result at c[0], c[10] and c[255]
-	printf("c[0] = %d\nc[10] = %d\nc[255] = %d\n", c[0], c[10], c[255]);
-
-	/*for (int i = 0; i < 256; i++)
-	{
-		printf("c[%d] = %d\n", i, c[i]);
-	}*/
+	printf("c[0] = %d / c[10] = %d / c[255] = %d\n", c[0], c[10], c[255]);
 
 	return 0;
 }
